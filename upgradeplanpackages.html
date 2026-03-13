@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tanderrum – Upgrade Plan </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6fa;
+            color: #111;
+        }
+
+        /* ===== HEADER (identical) ===== */
+        .top-header {
+            border-bottom: 1px solid #eee;
+            position: relative;
+            background: white;
+        }
+
+        .header-container {
+            max-width: 1300px;
+            margin: auto;
+            padding: 18px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo img {
+            width: 120px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000;
+            font-size: 14px;
+            padding-bottom: 6px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover { color: #ff6a00; }
+        .nav-links a.active { color: #ff6a00; }
+        .nav-links a.active::after {
+            content: "";
+            position: absolute;
+            bottom: -18px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #ff6a00;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .search-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #0c0b0b;
+            padding-bottom: 4px;
+        }
+        .search-nav input {
+            border: none;
+            outline: none;
+            font-size: 14px;
+            width: 140px;
+            background: transparent;
+        }
+        .search-nav i { font-size: 14px; color: #000; cursor: pointer; }
+
+        .header-icon {
+            font-size: 18px;
+            cursor: pointer;
+            color: #000;
+            transition: color 0.3s ease;
+        }
+        .header-icon:hover { color: #ff6a00; }
+
+        .login-text {
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .login-text:hover { color: #ff6a00; }
+
+        .menu-btn {
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            color: #000;
+            background: none;
+            border: none;
+            z-index: 1001;
+        }
+        .menu-btn:hover { 
+            color: #ff6a00; 
+        }
+
+        /* Mobile header */
+        @media (max-width: 991px) {
+            .menu-btn { 
+                display: block; order: 3; 
+            }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                flex-direction: column;
+                gap: 0;
+                z-index: 1000;
+            }
+            .top-header.active .nav-links { 
+                display: flex !important; 
+            }
+            .nav-links a {
+                padding: 16px 30px;
+                border-bottom: 1px solid #eee;
+                font-size: 16px;
+                width: 100%;
+            }
+            .nav-links a.active::after { 
+                display: none; 
+            }
+            .nav-links a.active { 
+                background: rgba(255,106,0,0.05); 
+                font-weight: bold; 
+            }
+            .header-container { 
+                padding: 15px 20px; 
+                flex-wrap: wrap; 
+            }
+            .logo { 
+                order: 1; 
+                flex: 1; 
+            }
+            .header-actions { 
+                order: 2; 
+                gap: 15px; 
+            }
+            .search-nav, .login-text { 
+                display: none; 
+            }
+            .header-icon { 
+                font-size: 20px; 
+            }
+        }
+
+        /* ===== UPGRADE PLAN – MORE COMPACT CARDS ===== */
+        .upgrade-section {
+            max-width: 1400px;
+            margin: 40px auto 60px;
+            padding: 0 20px;
+        }
+
+        .upgrade-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .upgrade-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.02em;
+        }
+        .upgrade-header p {
+            font-size: 1rem;
+            color: #4a4a4a;
+            margin-top: 8px;
+        }
+
+        .plan-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;              /* reduced gap */
+            margin-top: 20px;
+        }
+
+        .plan-card {
+            background: white;
+            border-radius: 20px;        
+            box-shadow: 0 15px 30px -8px rgba(0,0,0,0.1);
+            flex: 1 1 260px;           
+            max-width: 330px;            
+            padding: 30px 22px 25px;     
+            transition: transform 0.2s ease, box-shadow 0.3s;
+            border: 1px solid #eaeef2;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 35px -12px rgba(242,75,9,0.2);
+        }
+
+        .plan-card.basic {
+            border-top: 5px solid #9aa6b2;
+        }
+        .plan-card.premium {
+            border-top: 5px solid #F24B09;
+        }
+        .plan-card.pro {
+            border-top: 5px solid #8A2BE2;
+        }
+
+        /* plain logo top‑right – slightly smaller */
+        .card-logo-plain {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            left: auto;
+            width: 70px;                
+            height: auto;
+            z-index: 2;
+        }
+        .card-logo-plain img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -10px;
+            left: 22px;
+            background: #F24B09;
+            color: white;
+            font-weight: 700;
+            font-size: 0.75rem;          
+            padding: 4px 12px;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            z-index: 1;
+        }
+        .plan-card.basic .plan-badge { 
+            background: #4b5563; 
+        }
+        .plan-card.pro .plan-badge { 
+            background: #8A2BE2; 
+        }
+
+        .plan-name {
+            font-size: 1.6rem;            
+            font-weight: 700;
+            margin: 20px 0 3px;            
+        }
+        .basic .plan-name { 
+            color: #2d3748; 
+        }
+        .premium .plan-name { 
+            color: #F24B09; 
+        }
+        .pro .plan-name { 
+            color: #8A2BE2; 
+        }
+
+        .plan-price {
+            font-size: 2.6rem;             
+            font-weight: 800;
+            color: #111;
+            margin: 12px 0 5px;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+        .plan-price span {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: #5f6b7a;
+        }
+
+        .plan-status {
+            display: inline-block;
+            background: #f0f2f5;
+            border-radius: 30px;
+            padding: 6px 18px;              
+            font-weight: 600;
+            font-size: 0.85rem;              
+            margin-bottom: 20px;              
+            color: #1f2937;
+            align-self: flex-start;
+        }
+        .premium .plan-status {
+            background: #F24B09;
+            color: white;
+        }
+        .pro .plan-status {
+            background: #8A2BE2;
+            color: white;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 0 0 15px;               
+            text-align: left;
+            flex: 1 1 auto;
+        }
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;                        
+            font-size: 0.9rem;                 
+            padding: 8px 0;                    
+            border-bottom: 1px solid #ecf1f6;
+            color: #2e3a4a;
+        }
+        .feature-list li:last-child { border-bottom: none; }
+        .feature-list i {
+            color: #F24B09;
+            font-size: 1rem;                   
+            width: 20px;
+            text-align: center;
+        }
+        .basic .feature-list i { 
+            color: #4b5563; 
+        }
+        .pro .feature-list i { 
+            color: #8A2BE2; 
+        }
+
+        .plan-action {
+            margin-top: auto;
+            padding-top: 5px;                  
+        }
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 10px;                 
+            background: #1f2937;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;                    
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            text-align: center;
+        }
+        .premium .action-btn {
+            background: #F24B09;
+            box-shadow: 0 5px 12px -6px rgba(242,75,9,0.4);
+        }
+        .pro .action-btn {
+            background: #8A2BE2;
+            box-shadow: 0 5px 12px -6px rgba(138,43,226,0.4);
+        }
+        .action-btn:hover {
+            background: #000;
+            transform: scale(1.01);
+        }
+        .premium .action-btn:hover { 
+            background: #d13d00; 
+        }
+        .pro .action-btn:hover { 
+            background: #6b1fa0; 
+        }
+
+        .footnote {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #5f6b7a;
+            margin-top: 35px;
+            border-top: 1px solid #dce3eb;
+            padding-top: 25px;
+        }
+        .footnote i { 
+            color: #F24B09; margin-right: 5px; 
+        }
+
+        /* responsive fine‑tuning for compactness */
+        @media (min-width: 1920px) {
+            .upgrade-section { 
+                max-width: 1600px; 
+            }
+            .plan-card { 
+                max-width: 360px; 
+                padding: 35px 25px 30px; 
+            }
+            .card-logo-plain { 
+                width: 75px; 
+                top: 18px; 
+                right: 22px; 
+            }
+            .plan-name { 
+                font-size: 1.8rem; 
+            }
+            .plan-price { 
+                font-size: 3rem; 
+            }
+        }
+        @media (max-width: 900px) {
+            .plan-cards { 
+                gap: 18px; 
+            }
+            .plan-card { 
+                max-width: 300px; 
+                padding: 28px 20px 22px; 
+            }
+            .card-logo-plain { 
+                width: 65px; 
+                top: 14px; 
+                right: 18px; 
+            }
+            .plan-badge { 
+                left: 20px; 
+                font-size: 0.7rem; 
+                padding: 4px 10px; 
+            }
+        }
+        @media (max-width: 700px) {
+            .upgrade-header h1 { 
+                font-size: 1.9rem; 
+            }
+            .plan-cards { 
+                gap: 20px; 
+            }
+            .plan-card { 
+                max-width: 400px; 
+                width: 100%; 
+            }
+            .card-logo-plain { 
+                width: 70px; 
+            }
+        }
+        @media (max-width: 420px) {
+            .plan-price { 
+                font-size: 2.4rem; 
+            }
+            .feature-list li { 
+                font-size: 0.85rem; 
+            }
+            .card-logo-plain { 
+                width: 60px; 
+                top: 12px; 
+                right: 14px; 
+            }
+            .plan-badge { 
+                left: 16px; 
+            }
+        }
+
+        /* ===== FOOTER – CENTERED NEWSLETTER ===== */
+        .footer-new {
+            background: #F24B09;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            padding: 20px 30px 0;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            box-sizing: border-box;
+        }
+
+        .footer-logo-social {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-logo-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .footer-logo-img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .footer-logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .footer-logo-text span {
+            opacity: 0.9;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .social-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: #000;
+            transform: translateY(-2px);
+        }
+
+        .footer-contact {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 13px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .contact-item i {
+            color: #fff;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* --- newsletter section fully centered --- */
+        .footer-newsletter-section {
+            text-align: center;           
+            margin-left: auto;
+            margin-right: auto;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 15px;          
+            display: flex;
+            flex-direction: column;
+            align-items: center;           
+        }
+
+        .footer-newsletter-section h3 {
+            font-size: 15px;
+            margin: 0 0 8px 0;            
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-newsletter-section p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0 0 10px 0;            
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-newsletter-form {
+            display: flex;
+            justify-content: center;
+            max-width: 320px;
+            width: 100%;                    
+            margin: 0 auto;                  
+        }
+
+        .footer-newsletter-form input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 12px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .footer-newsletter-form input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-newsletter-form input:focus {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .footer-newsletter-form button {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 0 16px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .footer-newsletter-form button:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* keep any remaining utility classes (if needed) */
+        @media (max-width: 768px) {
+            .footer-contact { 
+                flex-direction: column; 
+                align-items: center; 
+                gap: 15px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="top-header">
+    <div class="header-container">
+        <div class="logo">
+            <img src="images/tandurrum event.png" alt="Tanderrum">
+        </div>
+        <nav class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Browse Events</a>
+            <a href="#">Venues</a>
+            <a href="#">Help Center</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-nav">
+                <input type="text" placeholder="search events">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="cart-section">
+                <i class="fa-solid fa-cart-shopping header-icon"></i>
+                <span class="login-text">CART</span>
+            </div>
+            <div class="login-section">
+                <i class="fa-solid fa-user header-icon"></i>
+                <span class="login-text">LOGIN</span>
+            </div>
+            <i class="fa-solid fa-bars menu-btn"></i>
+        </div>
+    </div>
+</header>
+
+<!-- ===== UPGRADE PLAN – MORE COMPACT CARDS ===== -->
+<section class="upgrade-section">
+    <div class="upgrade-header">
+        <h1>Choose the right plan for your events</h1>
+        <p>Basic, Premium or Pro – get the most out of Tanderrum</p>
+    </div>
+
+    <div class="plan-cards">
+        <!-- Basic Card -->
+        <div class="plan-card basic">
+            <div class="card-logo-plain">
+                <img src="images/tandurrum event.png" alt="Tanderrum">
+            </div>
+            <div class="plan-badge">ESSENTIAL</div>
+            <div class="plan-name">Basic</div>
+            <div class="plan-price">$19.99 <span>/ month</span></div>
+            <div class="plan-status">Current Plan</div>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i> Collaboration tools</li>
+                <li><i class="fas fa-check-circle"></i> Robust security</li>
+                <li><i class="fas fa-check-circle"></i> User-friendly interface</li>
+                <li><i class="fas fa-check-circle"></i> Mobile access</li>
+                <li><i class="fas fa-check-circle"></i> Browse & discover</li>
+            </ul>
+            <div class="plan-action">
+                <button class="action-btn" disabled style="opacity:0.6; cursor:default;">Current Plan</button>
+            </div>
+        </div>
+
+        <!-- Premium Card -->
+        <div class="plan-card premium">
+            <div class="card-logo-plain">
+                <img src="images/tandurrum event.png" alt="Tanderrum">
+            </div>
+            <div class="plan-badge">MOST POPULAR</div>
+            <div class="plan-name">Premium</div>
+            <div class="plan-price">$49.99 <span>/ month</span></div>
+            <div class="plan-status">Upgrade</div>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i> Community access</li>
+                <li><i class="fas fa-check-circle"></i> Discounts on long‑term</li>
+                <li><i class="fas fa-check-circle"></i> Early beta access</li>
+                <li><i class="fas fa-check-circle"></i> Feedback opportunities</li>
+                <li><i class="fas fa-check-circle"></i> Priority event alerts</li>
+                <li><i class="fas fa-check-circle"></i> Personal wishlist</li>
+            </ul>
+            <div class="plan-action">
+                <button class="action-btn">Upgrade Now</button>
+            </div>
+        </div>
+
+        <!-- Pro Card -->
+        <div class="plan-card pro">
+            <div class="card-logo-plain">
+                <img src="images/tandurrum event.png" alt="Tanderrum">
+            </div>
+            <div class="plan-badge">FOR ORGANISERS</div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">$99.99 <span>/ month</span></div>
+            <div class="plan-status">Go Pro</div>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i> List & promote events</li>
+                <li><i class="fas fa-check-circle"></i> Advanced venue analytics</li>
+                <li><i class="fas fa-check-circle"></i> Custom booking & QR</li>
+                <li><i class="fas fa-check-circle"></i> Integrated marketing</li>
+                <li><i class="fas fa-check-circle"></i> Priority support</li>
+                <li><i class="fas fa-check-circle"></i> All Premium features</li>
+            </ul>
+            <div class="plan-action">
+                <button class="action-btn">Get Pro</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footnote">
+        <i class="fas fa-shield-alt"></i> 24/7 support, secure payments, and a 30‑day money‑back guarantee on all plans.
+    </div>
+</section>
+
+<!-- ===== FOOTER – CENTERED NEWSLETTER ===== -->
+<footer class="footer-new">
+    <div class="footer-logo-social">
+        <div class="footer-logo-wrapper">
+            <img src="images/vector.png" alt="Tanderrum Logo" class="footer-logo-img">
+            <div class="footer-logo-text">TANDERRUM<span>.Event</span></div>
+        </div>
+        <div class="footer-social">
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+    </div>
+    <div class="footer-contact">
+        <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <span>support@tanderrum.ai</span>
+        </div>
+    </div>
+    
+    <!-- newsletter section – fully centered -->
+    <div class="footer-newsletter-section">
+        <h3>NEVER MISS OUT</h3>
+        <p>Get notified about new events</p>
+        <form class="footer-newsletter-form">
+            <input type="email" placeholder="Enter your email address" required>
+            <button type="submit">→</button>
+        </form>
+    </div>
+    
+</footer>
+
+<!-- mobile menu script (unchanged) -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuBtn = document.querySelector('.menu-btn');
+        const topHeader = document.querySelector('.top-header');
+        if (menuBtn) {
+            menuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                topHeader.classList.toggle('active');
+                document.body.style.overflow = topHeader.classList.contains('active') ? 'hidden' : '';
+            });
+        }
+        document.addEventListener('click', function(event) {
+            if (topHeader.classList.contains('active') && !topHeader.contains(event.target) && window.innerWidth <= 900) {
+                topHeader.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 900) {
+                    topHeader.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 900 && topHeader.classList.contains('active')) {
+                topHeader.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+</script>
+</body>
+</html>
